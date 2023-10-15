@@ -13,7 +13,7 @@ data class SearchPhotosResultDto(
     val totalPages: Int?
 )
 
-//List<Result>から必要なデータを取り出し、Photoの各プロパティに変換する
+//SearchPhotosResultDtoのList<Result>から必要なデータを取り出し、Photoの各プロパティに変換する
 fun SearchPhotosResultDto.toPhotos():List<Photo>{
     return results!!.map {
         Photo(
