@@ -5,6 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
+//UnsplashApiをRetrofitのインタフェースを追加
 interface UnsplashApi {
 
     @Headers("Authorization: Client-ID ${Constants.API_KEY}")
