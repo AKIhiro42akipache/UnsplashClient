@@ -1,6 +1,7 @@
 package com.memo.unsplashclient.data.remote
 
 
+import com.memo.unsplashclient.domain.model.PhotoDetail
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -32,3 +33,17 @@ data class PhotoDetailDto(
     val user: UserX?,
     val width: Int?
 )
+
+//PhotoDetailDtoから必要なデータを取り出し、PhotoDetailの各プロパティに変換する
+fun PhotoDetailDto.toPhotoDetail():PhotoDetail{
+    return PhotoDetail(
+       description = description,
+        likes = likes,
+        imageUrl = urls!!.raw!!,
+        photographer = user?.username,
+        camera = exif?.name,
+        location = "${location?.city}, ${location?.country}",
+        downloads = downloads
+
+    )
+}
