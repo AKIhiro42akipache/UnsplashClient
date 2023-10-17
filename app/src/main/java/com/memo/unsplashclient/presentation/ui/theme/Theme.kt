@@ -1,4 +1,4 @@
-package com.memo.unsplashclient.ui.theme
+package com.memo.unsplashclient.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
