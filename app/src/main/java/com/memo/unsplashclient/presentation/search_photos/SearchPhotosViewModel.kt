@@ -1,7 +1,9 @@
 package com.memo.unsplashclient.presentation.search_photos
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.memo.unsplashclient.common.NetworkResponse
@@ -21,14 +23,14 @@ class SearchPhotosViewModel @Inject constructor(
     private val _state = mutableStateOf(SearchPhotosState())
     //view側で状態を変更できるようにするためのstate
     val state: State<SearchPhotosState> = _state
-
-    //アプリの起動時に最初に呼び出されるメソッド
+    var query by mutableStateOf("Programming")
+    //アプリの起動時に最初に呼び出されるメソッド(1回だけ描画)
     init {
-        searchPhotos("Miyagi")
+        searchPhotos()
     }
 
-    //画像検索機能のメソッド
-    fun searchPhotos(query: String) {
+    //画像検索機能のメソッド(APIを叩くようのメソッドになるため、queryを呼び出すときに使用する)
+   fun searchPhotos() {
         //Invoke関数を呼び出す
         //ネットワークresponseの状態が変わるたびに呼び出されるためそれぞれのケースの処理を記述
         searchPhotosUseCase(query).onEach { result ->
