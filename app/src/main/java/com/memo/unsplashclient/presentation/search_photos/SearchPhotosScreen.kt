@@ -16,12 +16,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.memo.unsplashclient.presentation.ScreenRoute
 import com.memo.unsplashclient.presentation.search_photos.components.PhotoThumbnail
 import com.memo.unsplashclient.presentation.search_photos.components.SearchBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchPhotosScreen(viewModel:SearchPhotosViewModel = hiltViewModel()){
+fun SearchPhotosScreen(
+    navController: NavController,
+    viewModel:SearchPhotosViewModel = hiltViewModel()
+){
     //ViewModelが保持しているStateを取得
     val state = viewModel.state.value
     Scaffold(
@@ -33,7 +38,6 @@ fun SearchPhotosScreen(viewModel:SearchPhotosViewModel = hiltViewModel()){
     ) {paddingValues ->
         //Boxを定義して画面幅いっぱいにローディングインジゲーターを設定する
         Box(modifier = Modifier.fillMaxSize()){
-
             when{
                 //画像検索画面のロードを行っている場合
                 state.isLoading ->{
@@ -51,7 +55,10 @@ fun SearchPhotosScreen(viewModel:SearchPhotosViewModel = hiltViewModel()){
                 else ->{
                     LazyColumn(modifier = Modifier.padding(paddingValues)){
                         items(state.photos) { photo ->
-                            PhotoThumbnail(photo = photo, onClick = {})
+                            PhotoThumbnail(photo = photo, onClick = {
+                                //画像詳細画面へ遷移する
+                                navController.navigate(ScreenRoute.PhotoDetailScreen.route + "/${photo.photoId}")
+                            })
                         }
                     }
                 }

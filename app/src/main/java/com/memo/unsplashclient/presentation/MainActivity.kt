@@ -33,11 +33,13 @@ class MainActivity : ComponentActivity() {
                     {
                         //画像検索画面
                         composable(route = ScreenRoute.SearchPhotosScreen.route){
-                            SearchPhotosScreen()
+                            //画面を表示するタイミングで引数を渡し、SearchPhotosScreen上でも画面遷移を実装できるようにする
+                            SearchPhotosScreen(navController)
                         }
-                        //画像詳細表示画面
-                        composable(route = ScreenRoute.PhotoDetailScreen.route){
-                            //todo
+                        //画像詳細表示画面を表示する処理(画像を表示する場合はIDを渡してあげる必要がある)
+                        composable(route = ScreenRoute.PhotoDetailScreen.route + "/{photoId}") {
+                            //todo 一旦画像詳細表示画面と置く
+                            Text(text = "画像詳細表示画面")
                         }
                     }
 
