@@ -22,8 +22,7 @@ fun SearchPhotosScreen(viewModel:SearchPhotosViewModel = hiltViewModel()){
             searchText = viewModel.query,
             onSearchChangeText = {viewModel.query = it},
             onDone = {viewModel.searchPhotos()})}
-    ) {
-        paddingValues ->
+    ) {paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)){
             items(state.photos) { photo ->
                 PhotoThumbnail(photo = photo, onClick = {})
