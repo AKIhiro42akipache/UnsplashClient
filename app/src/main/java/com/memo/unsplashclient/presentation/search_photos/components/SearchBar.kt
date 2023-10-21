@@ -1,5 +1,7 @@
 package com.memo.unsplashclient.presentation.search_photos.components
 
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -21,9 +23,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.doOnLayout
+import com.memo.unsplashclient.presentation.MainActivity
+import kotlin.math.roundToInt
 
 @Composable
 fun SearchBar(
@@ -37,8 +47,16 @@ fun SearchBar(
     var showClearButton by remember {mutableStateOf(false)}
     val focusRequester = remember {FocusRequester()}
     val keyboardController = LocalSoftwareKeyboardController.current
+    //現在表示されているstatusBarの色を取得する
+    val statusBarColor = getStatusBarColor(activity = LocalView.current.context as ComponentActivity)
 
-    TopAppBar{
+    TopAppBar(
+        //statusBarの色を設定する
+        backgroundColor = statusBarColor,
+        //statusBarの色がDarkModeのときはstatusBarの文字色を白にする
+        contentColor = if(isSystemInDarkTheme()) Color.White else Color.Black,
+        elevation = 0.dp
+    ){
         OutlinedTextField(
             value = searchText,
             onValueChange =onSearchChangeText,
@@ -61,7 +79,8 @@ fun SearchBar(
                 IconButton(onClick = {onSearchChangeText("")}) {
                     Icon(
                         imageVector = Icons.Filled.Close,
-                        contentDescription = "close"
+                        contentDescription = "close",
+                        tint = if(isSystemInDarkTheme()) Color.White else Color.Black,
                     )
                 }
             },
@@ -82,4 +101,28 @@ fun SearchBar(
     LaunchedEffect(Unit){
         focusRequester.requestFocus()
     }
+}
+
+@Composable
+fun getStatusBarColor(activity: ComponentActivity): Color {
+    val localView = LocalView.current
+    val localDensity = LocalDensity.current.density
+
+    val statusBarColor = remember {
+        val statusBarColor = mutableStateOf(Color.Transparent)
+
+        localView.doOnLayout {
+            val windowInsets = ViewCompat.getRootWindowInsets(localView)
+            val statusBarInsets = windowInsets?.getInsets(WindowInsetsCompat.Type.systemBars())
+            if (statusBarInsets != null) {
+                // Convert the alpha component to a Color
+                val alphaColor = (statusBarInsets.top / localDensity).roundToInt()
+                statusBarColor.value = Color(alpha = alphaColor, red = 0, green = 0, blue = 0)
+            }
+        }
+
+        statusBarColor
+    }
+
+    return statusBarColor.value
 }
