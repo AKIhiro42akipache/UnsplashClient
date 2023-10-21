@@ -1,5 +1,6 @@
 package com.memo.unsplashclient.presentation
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -20,6 +23,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+           when(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK){
+               //ユーザーがDarkModeを選択したときだけステータスバーとナビゲーションバーの色を黒にする
+               Configuration.UI_MODE_NIGHT_YES -> {
+                     window.statusBarColor = Color.Black.copy(alpha = 0.8f).toArgb()
+                     window.navigationBarColor =  Color.Black.copy(alpha = 0.8f).toArgb()
+               }
+           }
             UnsplashClientTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
