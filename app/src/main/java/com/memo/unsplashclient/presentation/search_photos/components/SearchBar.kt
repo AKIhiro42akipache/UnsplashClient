@@ -64,11 +64,11 @@ fun SearchBar(
                 .fillMaxWidth()
                 .padding(vertical = 2.dp)
                 //Focusが変更されたときの呼ばれる処理
-                .onFocusChanged { FocueState ->
+                .onFocusChanged { focusState ->
                     /*OutLineTextFieldにFocusがあたっているときは
                     * クリアボタンを表示し、focusが外れたときはクリアボタンを
                     * 非表示にする*/
-                    showClearButton = FocueState.isFocused
+                    showClearButton = focusState.isFocused
                 }
                 //OutlinedTextFieldにfocusが当たっている状態を外部から識別する
                 .focusRequester(focusRequester),
